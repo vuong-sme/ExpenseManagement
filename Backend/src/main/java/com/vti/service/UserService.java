@@ -26,7 +26,7 @@ public class UserService implements IUserService{
     TokenManager tokenManager;
 
     @Override
-    public String  createUser(CreateUserForm createUserForm) {
+    public User  createUser(CreateUserForm createUserForm) {
         if ((userRepository.findByEmail(createUserForm.getEmail())) != null) {
             throw new RuntimeException("Email đã tồn tại!");
         }
@@ -38,14 +38,7 @@ public class UserService implements IUserService{
 
         User userNew = userRepository.save(user);
 
-        CustomUserDetails userDetails = new CustomUserDetails(
-                user.getFullName(),
-                user.getPassword(),
-                new ArrayList<>(),
-                user.getId(),
-                user.getFullName()
-        );
-            return tokenManager.generateToken(userDetails);
+        return userNew;
         }
 
     @Override

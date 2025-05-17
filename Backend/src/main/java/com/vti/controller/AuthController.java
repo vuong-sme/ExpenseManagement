@@ -90,8 +90,10 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody CreateUserForm createUserForm) {
         try {
-            String token = userService.createUser(createUserForm);
-            return ResponseEntity.ok(Map.of("token", token));
+            User user = userService.createUser(createUserForm);
+            return user!= null ?
+                    ResponseEntity.status(200).body("Register success") :
+                    ResponseEntity.notFound().build();
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
